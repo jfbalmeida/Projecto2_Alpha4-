@@ -39,7 +39,7 @@ class MinimaxAIPlayer(Player):
         """Avalia o estado completo do tabuleiro."""
         score = 0
 
-        # 1. Bónus pela Coluna Central
+        # 1. Incetivo na Coluna Central
         center_col = board.cols // 2
         center_array = [int(board.grid[r][center_col]) for r in range(board.rows)]
         center_count = center_array.count(piece)
@@ -59,13 +59,13 @@ class MinimaxAIPlayer(Player):
                 window = col_array[r:r+4]
                 score += self.evaluate_window(window, piece)
 
-        # 4. Diagonais Positivas (/)
+        # 4. Diagonais (/)
         for r in range(board.rows - 3):
             for c in range(board.cols - 3):
                 window = [int(board.grid[r+i][c+i]) for i in range(4)]
                 score += self.evaluate_window(window, piece)
 
-        # 5. Diagonais Negativas (\)
+        # 5. Diagonais (\)
         for r in range(3, board.rows):
             for c in range(board.cols - 3):
                 window = [int(board.grid[r-i][c+i]) for i in range(4)]
@@ -92,7 +92,7 @@ class MinimaxAIPlayer(Player):
             value = -math.inf
             column = random.choice(valid_moves)
             for col in valid_moves:
-                b_copy = board.copy() # Não modificamos o tabuleiro original!
+                b_copy = board.copy() # Não modificamos o tabuleiro original
                 b_copy.drop_piece(col, self.piece)
                 new_score = self.minimax(b_copy, depth - 1, alpha, beta, False)[1]
                 if new_score > value:
