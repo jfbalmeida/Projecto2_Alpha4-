@@ -7,12 +7,5 @@ class MCTSAIPlayer(Player):
         self.iterations = iterations
 
     def get_move(self, board):
-        """
-        TODO (Próxima fase): Implementar as 4 fases do MCTS:
-        1. Seleção (Selection)
-        2. Expansão (Expansion)
-        3. Simulação (Simulation/Rollout)
-        4. Retropropagação (Backpropagation)
-        """
         valid_moves = board.get_valid_moves()
         return random.choice(valid_moves) if valid_moves else None
