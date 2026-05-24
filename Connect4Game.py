@@ -143,10 +143,31 @@ def run_tests(test_name, p1, p2, num_games=10):
 if __name__ == "__main__":
     total_games = 50
     
+    print("A INICIAR TESTES (50 JOGOS CADA)...\n")
+
+    # 1. Minimax vs Aleatório
     p1 = MinimaxAIPlayer(piece=1, depth=3) 
     p2 = RandomAIPlayer(piece=2)
+    run_tests("MiniMax vs Aleatório", p1, p2, total_games)
     
-    run_tests("Minimax AI vs Random AI", p1, p2, total_games)
-    
+    # 2. MCTS vs Aleatório
+    p1_mcts = MCTSAIPlayer(piece=1, iterations=1000)
+    p2_rand = RandomAIPlayer(piece=2)
+    run_tests("MCTS vs Aleatório", p1_mcts, p2_rand, total_games)
 
-    print("Todos os testes foram concluídos com sucesso.")
+    # 3. 1º comb MiniMax vs MCTS (Jogadas Rápidas)
+    p1_comb1 = MinimaxAIPlayer(piece=1, depth=2)
+    p2_comb1 = MCTSAIPlayer(piece=2, iterations=150)
+    run_tests("1º comb MiniMax vs MCTS", p1_comb1, p2_comb1, total_games)
+
+    # 4. 2º comb MiniMax vs MCTS (Jogadas Médias)
+    p1_comb2 = MinimaxAIPlayer(piece=1, depth=3)
+    p2_comb2 = MCTSAIPlayer(piece=2, iterations=1500)
+    run_tests("2º comb MiniMax vs MCTS", p1_comb2, p2_comb2, total_games)
+
+    # 5. 3º comb MiniMax vs MCTS (Jogadas Lentas / Pesadas)
+    p1_comb3 = MinimaxAIPlayer(piece=1, depth=4)
+    p2_comb3 = MCTSAIPlayer(piece=2, iterations=8000)
+    run_tests("3º comb MiniMax vs MCTS", p1_comb3, p2_comb3, total_games)
+
+    print("TODOS OS TESTES FORAM CONCLUÍDOS COM SUCESSO! Podes preencher o Excel.")
