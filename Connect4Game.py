@@ -8,7 +8,6 @@ from HumanPlayer import HumanPlayer
 from RandomPlayer import RandomAIPlayer
 
 
-
 # =========================
 # GAME LOOP
 # =========================
@@ -51,7 +50,7 @@ class Connect4Game:
                 elif board.is_board_full():
                     if (not headless):
                         gui.draw_game()
-                    print("Drwa!!!!")
+                    print("Draw!!!!")
                     game_over = True
 
                 if(not headless):
@@ -63,7 +62,78 @@ class Connect4Game:
                 pygame.time.wait(300)
 
             if game_over and not headless:
-                gui.game_over()
+                gui.game_over() 
+
+
+# =========================
+# AUTOMATED TESTS FUNCTION
+# =========================
+
+def run_tests(test_name, p1, p2, num_games=10):
+    print(f"\nA correr testes para: {test_name} ({num_games} games)...")
+    
+    pygame.init() 
+    
+    victories_p1 = 0
+    victories_p2 = 0
+    draws = 0
+    game_durations = []
+
+    for i in range(num_games):
+        board = Connect4Board(6, 7, 4)
+        players = [p1, p2]
+        turn = 0
+        
+        # Mede o tempo inicial em milissegundos usando o pygame
+        tempo_inicio = pygame.time.get_ticks()
+        
+        while True:
+            current_player = players[turn]
+            move = current_player.get_move(board)
+            
+            if move is not None and move in board.get_valid_moves():
+                board.drop_piece(move, current_player.piece)
+                
+                if board.check_winner(current_player.piece):
+                    if current_player.piece == p1.piece:
+                        victories_p1 += 1  # CORRIGIDO AQUI
+                    else:
+                        victories_p2 += 1  # CORRIGIDO AQUI
+                    break
+                elif board.is_board_full():
+                    draws += 1             # CORRIGIDO AQUI
+                    break
+                    
+                turn = (turn + 1) % 2
+            else:
+                draws += 1                 # CORRIGIDO AQUI
+                break
+
+        # Mede o tempo final e calcula a duração em segundos
+        tempo_fim = pygame.time.get_ticks()
+        duracao_segundos = (tempo_fim - tempo_inicio) / 1000.0
+        game_durations.append(duracao_segundos)
+        
+        print(f"   Jogo {i+1}/{num_games} concluído.")
+
+     #Calculos
+    victory_rate_p1 = (victories_p1 / num_games) * 100
+    victory_rate_p2 = (victories_p2 / num_games) * 100
+    avg_duration = sum(game_durations) / len(game_durations)
+    max_duration = max(game_durations)
+    min_duration = min(game_durations)
+
+    print("\n" + "="*50)
+    print(f"Nº de Jogos:                      {num_games}")
+    print(f"Vitórias Jogador 1:               {victories_p1}")
+    print(f"Vitórias Jogador 2:               {victories_p2}")
+    print(f"Empates:                          {draws}")
+    print(f"Taxa de Vitórias Jogador 1 (%):   {victory_rate_p1:.2f}%")
+    print(f"Taxa de Vitórias Jogador 2 (%):   {victory_rate_p2:.2f}%")
+    print(f"Duração Média do Jogo (s):        {avg_duration:.4f}")
+    print(f"Duração Máxima (s):               {max_duration:.4f}")
+    print(f"Duração Mínima (s):               {min_duration:.4f}")
+    print("="*50 + "\n")
 
 
 # =========================
@@ -71,7 +141,12 @@ class Connect4Game:
 # =========================
 
 if __name__ == "__main__":
-    p1 = HumanPlayer(piece=1)
-    p2 = MinimaxAIPlayer(piece=2)
-    game = Connect4Game()
-    game.run_game(p1, p2, headless= False)
+    total_games = 50
+    
+    p1 = MinimaxAIPlayer(piece=1, depth=3) 
+    p2 = RandomAIPlayer(piece=2)
+    
+    run_tests("Minimax AI vs Random AI", p1, p2, total_games)
+    
+
+    print("Todos os testes foram concluídos com sucesso.")
