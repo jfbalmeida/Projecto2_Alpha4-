@@ -53,7 +53,6 @@ class MCTSAIPlayer(Player):
         return best.move
 
     def _select(self, node):
-        """Seleciona e expande — exatamente como nos slides da Aula 16."""
         while not node.is_terminal():
             if not node.is_fully_expanded():
                 return self._expand(node)

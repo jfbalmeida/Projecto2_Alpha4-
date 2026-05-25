@@ -139,10 +139,16 @@ def run_tests(test_name, p1, p2, num_games=10):
 # =========================
 # RUN CONFIGURATION
 # =========================
-
+#if __name__ == "__main__":
+#    game = Connect4Game()
+#    
+    # Exemplo: Humano vs Minimax (profundidade 4)
+#    p1 = HumanPlayer(piece=1)
+#    p2 = MinimaxAIPlayer(piece=2, depth=4)
+    
+#    game.run_game(p1, p2, headless=False)
 if __name__ == "__main__":
     total_games = 50
-    
     print("A INICIAR TESTES (50 JOGOS CADA)...\n")
 
     # 1. Minimax vs Aleatório
