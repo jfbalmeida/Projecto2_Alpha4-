@@ -167,9 +167,9 @@ if __name__ == "__main__":
     # run_tests("1º comb MiniMax vs MCTS", p1_comb1, p2_comb1, total_games)
 
     # 4. 2º comb MiniMax vs MCTS (Jogadas Médias)
-    #p1_comb2 = MinimaxAIPlayer(piece=1, depth=4)
-    #p2_comb2 = MCTSAIPlayer(piece=2, iterations=1500)
-    #run_tests("2º comb MiniMax vs MCTS", p1_comb2, p2_comb2, total_games)
+    p1_comb2 = MinimaxAIPlayer(piece=1, depth=4)
+    p2_comb2 = MCTSAIPlayer(piece=2, iterations=1500)
+    run_tests("2º comb MiniMax vs MCTS", p1_comb2, p2_comb2, total_games)
 
     # 5. 3º comb MiniMax vs MCTS (Jogadas Lentas / Pesadas)
     p1_comb3 = MinimaxAIPlayer(piece=1, depth=6)
