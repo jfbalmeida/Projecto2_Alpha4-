@@ -1,4 +1,5 @@
 import math
+from platform import node
 import random
 from Player import Player
 
@@ -18,7 +19,10 @@ class Node:
         return len(self.untried_moves) == 0
 
     def is_terminal(self):
-        return len(self.board.get_valid_moves()) == 0
+    # O jogo termina se o tabuleiro encher OU se o jogador 1 ou 2 vencerem
+        return (len(self.board.get_valid_moves()) == 0 or 
+            self.board.check_winner(1) or 
+            self.board.check_winner(2))
 
     def ucb(self, c=math.sqrt(2)):
         if self.visits == 0:
@@ -78,19 +82,23 @@ class MCTSAIPlayer(Player):
         current_piece = node.current_piece
 
         while True:
+            # Verifica se o jogador anterior ganhou com a última jogada colocada
             prev_piece = self.opponent_piece if current_piece == self.piece else self.piece
             if sim_board.check_winner(prev_piece):
-                return 1 if prev_piece == self.piece else 0
+                return prev_piece # Devolve 1 ou 2
 
             moves = sim_board.get_valid_moves()
             if not moves:
-                return 0.5 
+                return 0.5 # Empate
 
             sim_board.drop_piece(random.choice(moves), current_piece)
             current_piece = self.opponent_piece if current_piece == self.piece else self.piece
-
-    def _backpropagate(self, node, result):
+    def _backpropagate(self, node, winner):
         while node is not None:
             node.visits += 1
-            node.wins += result
+            if winner == 0.5:
+                node.wins += 0.5
+            else:
+                if node.parent and node.parent.current_piece == winner:
+                    node.wins += 1
             node = node.parent
