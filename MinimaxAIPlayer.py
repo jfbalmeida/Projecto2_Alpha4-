@@ -3,9 +3,9 @@ import random
 from Player import Player
 
 class MinimaxAIPlayer(Player):
-    def __init__(self, piece, depth=4):
+    def __init__(self, piece, max_depth=5):
         super().__init__(piece)
-        self.depth = depth
+        self.max_depth = max_depth
         self.opponent_piece = 1 if piece == 2 else 2
 
     def is_terminal_node(self, board):

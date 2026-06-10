@@ -34,9 +34,9 @@ class Node:
 
 
 class MCTSAIPlayer(Player):
-    def __init__(self, piece, iterations=1000):
+    def __init__(self, piece, max_iterations=1000):
         super().__init__(piece)
-        self.iterations = iterations
+        self.iterations = max_iterations
         self.opponent_piece = 2 if piece == 1 else 1
 
     def get_move(self, board):
